@@ -7,6 +7,13 @@
     <groupId>groupId</groupId>
     <artifactId>art-magazin-warhol-admin</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.2</version>
+        </dependency>
+    </dependencies>
 
-    
+
 </project>

@@ -1,12 +1,13 @@
 package model;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ImageDAO {
 
-    void deleteImageById(int id);
-    Image getImageById(int id);
-    void updateImageCategory(int id);
+    void deleteImageById(String id);
+    Image getImageById(String id);
+    void updateImageCategory(String id, String category);
     void deleteImagesByCategory(String category);
     List<Image> listImagesByCategory(String category);
     void addNewImage(Image image);

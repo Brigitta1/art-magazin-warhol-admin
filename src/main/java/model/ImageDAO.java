@@ -11,6 +11,7 @@ public interface ImageDAO {
     void deleteImagesByCategory(String category);
     List<Image> listImagesByCategory(String category);
     void addNewImage(Image image);
+    List<Image> listAllImages();
 
 }
 

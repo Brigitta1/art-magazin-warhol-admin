@@ -1,6 +1,5 @@
 package model;
 
-
 import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64;
 
 import javax.sql.DataSource;
@@ -17,10 +16,11 @@ public class ImageDaoJdbc implements ImageDAO{
 
 
     public void deleteImageById(String id) {
+        UUID uuid = UUID.fromString(id);
         try(Connection c = ds.getConnection()) {
             String query = "DELETE FROM image WHERE id = ?";
             PreparedStatement ps = c.prepareStatement(query);
-            ps.setString(1, id.toString());
+            ps.setObject(1, uuid);
             ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new RuntimeException();
@@ -101,6 +101,26 @@ public class ImageDaoJdbc implements ImageDAO{
             ps.setString(3, image.getContent().toString());
             ps.setString(4, image.getExtension());
             ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Image> listAllImages() {
+        List<Image> images = new ArrayList<>();
+        try(Connection c = ds.getConnection()) {
+            String query = "SELECT id, category, content, extension FROM image ORDER BY id";
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                byte[] content = rs.getBytes(3);
+                UUID uuid = (UUID) rs.getObject(1);
+                Image image = new Image(uuid, rs.getString(2), content, rs.getString(4));
+                images.add(image);
+            }
+            return images;
+
         } catch (SQLException throwables) {
             throw new RuntimeException();
         }
